@@ -2,9 +2,8 @@
  * Create a list that holds all of your cards
  */
 
-var movesCounter = 0;
-var findMatch = [];
-var shuffledCards;
+var shuffledCards, restartGame, movesCounter, findMatch = [],
+    matchedcards = [];
 var cardListContainer = document.querySelector('.deck');
 var cardList = ['<li class="card"><i class="fa fa-diamond"></i></li>',
     '<li class="card"><i class="fa fa-paper-plane-o"></i></li>',
@@ -23,21 +22,6 @@ var cardList = ['<li class="card"><i class="fa fa-diamond"></i></li>',
     '<li class="card"><i class="fa fa-paper-plane-o"></i></li>',
     '<li class="card"><i class="fa fa-cube"></i></li>'
 ];
-var restartGame = function() {
-    cardListContainer.innerHTML = '';
-    shuffledCards = shuffle(cardList);
-    shuffledCards.forEach(function(value) {
-        cardListContainer.innerHTML += value;
-    })
-
-}();
-document.querySelector(".restart").addEventListener("click", function() {
-    restartGame();
-})
-
-
-
-
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -60,7 +44,24 @@ function shuffle(array) {
 
     return array;
 }
+(function restart() {
+    resetCounter();
+    cardListContainer.innerHTML = '';
+    shuffledCards = shuffle(cardList);
+    shuffledCards.forEach(function(value) {
+        cardListContainer.innerHTML += value;
+    })
+    cardListContainer.childNodes.forEach(function(value) {
+        value.addEventListener("click", ShowCard)
+    })
 
+    restartGame = restart;
+
+})();
+
+document.querySelector(".restart").addEventListener("click", function() {
+    restartGame();
+})
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -73,9 +74,7 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-cardListContainer.childNodes.forEach(function(value) {
-    value.addEventListener("click", ShowCard)
-})
+
 
 function ShowCard() {
     this.className += " open show";
@@ -83,7 +82,6 @@ function ShowCard() {
 }
 
 function AddToList(element) {
-    console.log(findMatch)
     findMatch.push(element)
     if (findMatch.length > 1) {
         if (findMatch[0].children[0].className === findMatch[1].children[0].className) {
@@ -99,6 +97,14 @@ function AddToList(element) {
 function Matched() {
     findMatch.forEach(function(value) {
         value.className = 'card match';
+        value.removeEventListener("click", ShowCard)
+        matchedcards.push(value)
+        if (matchedcards.length == 16) {
+            console.log("Finish")
+            var newDiv = document.createElement("div");
+            var newContent = document.createTextNode("Congratulations! You won");
+            newDiv.appendChild(newContent);
+        }
     })
 }
 
@@ -110,5 +116,19 @@ function notMached() {
 
 function increaseCounter() {
     movesCounter++;
+    document.querySelector(".moves").innerHTML = movesCounter;
+    if (movesCounter == 10) {
+        document.querySelector(".stars").className += ' whiteStar';
+    }
+    if (movesCounter == 15) {
+        document.querySelector(".stars").className += ' whiteStar2';
+    }
+    if (movesCounter == 20) {
+        document.querySelector(".stars").className += ' whiteStar3';
+    }
+}
+
+function resetCounter() {
+    movesCounter = 0;
     document.querySelector(".moves").innerHTML = movesCounter;
 }
