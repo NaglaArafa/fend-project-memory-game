@@ -65,19 +65,37 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-    transition: transform .5s, font-size .3s 0s, background .5s .2s;
+    transform: rotateY(180deg);
+    transition: transform 1s, font-size .3s .2s, background .5s .2s;
     transform-style: preserve-3d;
 }
 
 .deck .card.open {
     background: #02b3e4;
     cursor: default;
-    transform: rotateY( 180deg);
+    transform: rotateY(0deg);
+    font-size: 33px;
+    /* transition: transform .5s, font-size .2s .2s; */
 }
 
-.deck .card.show {
-    font-size: 33px;
-    transition: transform .5s, font-size .2s .2s, background .5s .2s;
+.deck .card.open.notmatch {
+    background: rgb(247, 119, 119);
+    animation: shake .5s linear forwards;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(-10px, 0, 0);
+    }
+    80% {
+        transform: translate3d(10px, 0, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0) rotateY( 180deg);
+    }
 }
 
 
@@ -87,10 +105,9 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
-    /* transform: rotateY( 180deg);
-    transition: background .2s 0s; */
+    /* transform: rotateY( -180deg);
+    transition: transform .2s 0s; */
     animation: bounceIn 450ms linear forwards;
-    ;
 }
 
 @keyframes bounceIn {
@@ -138,12 +155,6 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
-}
-
-.whiteStar li:nth-child(1) i.fa.fa-star:before,
-.whiteStar2 li:nth-child(2) i.fa.fa-star:before,
-.whiteStar3 li:nth-child(3) i.fa.fa-star:before {
-    content: "\f006";
 }
 
 .winMessage {

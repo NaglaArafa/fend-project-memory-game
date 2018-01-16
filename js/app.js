@@ -7,7 +7,7 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-// Shuffle function from http://stackoverflow.com/a/2450976
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -19,10 +19,12 @@
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-var shuffledCards, restartGame, movesCounter, starNum = 3,
+var shuffledCards, restartGame, movesCounter = 0,
+    starNum = 3,
     findMatch = [],
-    matchedcards = [];
-var cardListContainer = document.querySelector('.deck');
+    matchedcards = [],
+    selector = document.querySelectorAll('.stars li'),
+    cardListContainer = document.querySelector('.deck');
 var cardList = ['<li class="card"><i class="fa fa-diamond"></i></li>',
     '<li class="card"><i class="fa fa-paper-plane-o"></i></li>',
     '<li class="card "><i class="fa fa-anchor"></i></li>',
@@ -40,24 +42,8 @@ var cardList = ['<li class="card"><i class="fa fa-diamond"></i></li>',
     '<li class="card"><i class="fa fa-paper-plane-o"></i></li>',
     '<li class="card"><i class="fa fa-cube"></i></li>'
 ];
-/*
-['<li class="card"><div><i class="fa fa-diamond"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-paper-plane-o"></i></div></li>',
-    '<li class="card "><div><i class="fa fa-anchor"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-bolt"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-cube"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-anchor"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-leaf"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-bicycle"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-diamond"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-bomb"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-leaf"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-bomb"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-bolt"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-bicycle"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-paper-plane-o"></i></div></li>',
-    '<li class="card"><div><i class="fa fa-cube"></i></div></li>'
-];*/
+
+// Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length,
         temporaryValue, randomIndex;
@@ -73,28 +59,27 @@ function shuffle(array) {
     return array;
 }
 
+//resrart function calling in the begining
 (function restart() {
-    resetCounter();
-    matchedcards = [];
-    cardListContainer.innerHTML = '';
     shuffledCards = shuffle(cardList);
     shuffledCards.forEach(function(value) {
         cardListContainer.innerHTML += value;
     })
     cardListContainer.childNodes.forEach(function(value) {
-        // setTimeout(() => value.className += " open show", 500)
+        setTimeout(() => value.className += " open show", 500)
+        setTimeout(() => value.className = "card", 3000)
         value.addEventListener("click", ShowCard)
     })
-
     restartGame = restart;
-
 })();
 
+//calling restart function when clicking on restart button to reset the game
 document.querySelector(".restart").addEventListener("click", function() {
+    cardListContainer.innerHTML = '';
+    matchedcards = [];
+    resetCounter();
     restartGame();
 })
-
-
 
 function ShowCard() {
     this.className += " open show";
@@ -130,36 +115,41 @@ function Matched() {
 
 function notMached() {
     findMatch.forEach(function(value) {
-        value.className = 'card';
+        value.className += ' notmatch';
+        setTimeout(() => value.className = "card", 1000)
         value.addEventListener("click", ShowCard)
     })
 }
 
 function increaseCounter() {
     movesCounter++;
-    document.querySelectorAll(".moves").forEach(function(value) {
-        value.innerHTML = movesCounter;
-    })
+    writeMoves(movesCounter)
     if (movesCounter == 10) {
-        document.querySelector(".stars").className += ' whiteStar';
+        selector[0].firstChild.className = "fa fa-star-o";
         starNum--;
     }
     if (movesCounter == 15) {
-        document.querySelector(".stars").className += ' whiteStar2';
+        selector[1].firstChild.className = "fa fa-star-o";
         starNum--;
     }
     if (movesCounter == 20) {
-        document.querySelector(".stars").className += ' whiteStar3';
+        selector[2].firstChild.className = "fa fa-star-o";
         starNum--;
     }
 }
 
 function resetCounter() {
     movesCounter = 0;
-    document.querySelectorAll(".moves").forEach(function(value) {
-        value.innerHTML = movesCounter;
+    writeMoves(movesCounter)
+    selector.forEach(function(element) {
+        element.firstChild.className = "fa fa-star";
     })
-    document.querySelector(".stars").className = "stars";
     starNum = 3;
     document.querySelector(".winMessage").style.display = "none";
+}
+
+function writeMoves(counter) {
+    document.querySelectorAll(".moves").forEach(function(value) {
+        value.innerHTML = counter;
+    })
 }
