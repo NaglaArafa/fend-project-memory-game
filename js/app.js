@@ -74,11 +74,13 @@ function shuffle(array) {
 })();
 
 //calling restart function when clicking on restart button to reset the game
-document.querySelector(".restart").addEventListener("click", function() {
-    cardListContainer.innerHTML = '';
-    matchedcards = [];
-    resetCounter();
-    restartGame();
+document.querySelectorAll(".restart, .playAgain").forEach(function(element) {
+    element.addEventListener("click", function() {
+        cardListContainer.innerHTML = '';
+        matchedcards = [];
+        resetCounter();
+        restartGame();
+    })
 })
 
 function ShowCard() {
@@ -116,7 +118,8 @@ function Matched() {
 function notMached() {
     findMatch.forEach(function(value) {
         value.className += ' notmatch';
-        setTimeout(() => value.className = "card", 1000)
+        setTimeout(() => value.className = 'card show', 500)
+        setTimeout(() => value.className = 'card', 1000)
         value.addEventListener("click", ShowCard)
     })
 }

@@ -66,35 +66,45 @@ h1 {
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
     transform: rotateY(180deg);
-    transition: transform 1s, font-size .3s .2s, background .5s .2s;
+    transition: transform .5s, font-size .3s, background .5s .2s;
     transform-style: preserve-3d;
 }
 
 .deck .card.open {
     background: #02b3e4;
     cursor: default;
+}
+
+.deck .card.show {
     transform: rotateY(0deg);
     font-size: 33px;
-    /* transition: transform .5s, font-size .2s .2s; */
+    transition: transform .5s, font-size .2s .2s, background .5s .2s;
 }
 
 .deck .card.open.notmatch {
     background: rgb(247, 119, 119);
-    animation: shake .5s linear forwards;
+    animation: shake .2s linear forwards;
+    transition: background .5s 0s;
 }
 
 @keyframes shake {
     0% {
         transform: translate3d(0, 0, 0);
     }
+    30% {
+        transform: translate3d(-5px, 0, 0);
+    }
     50% {
         transform: translate3d(-10px, 0, 0);
     }
-    80% {
+    70% {
         transform: translate3d(10px, 0, 0);
     }
+    90% {
+        transform: translate3d(5px, 0, 0);
+    }
     100% {
-        transform: translate3d(0, 0, 0) rotateY( 180deg);
+        transform: translate3d(0, 0, 0);
     }
 }
 
@@ -105,26 +115,20 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
-    /* transform: rotateY( -180deg);
-    transition: transform .2s 0s; */
     animation: bounceIn 450ms linear forwards;
 }
 
 @keyframes bounceIn {
     0% {
-        /* opacity: 0; */
         transform: scale(1);
     }
     50% {
-        /* opacity: 0.9; */
         transform: scale(1.1);
     }
     80% {
-        /* opacity: 1; */
         transform: scale(0.89);
     }
     100% {
-        /* opacity: 1; */
         transform: scale(1);
     }
 }
