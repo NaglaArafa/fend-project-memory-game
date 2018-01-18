@@ -8,7 +8,7 @@
 
 ## Description
 
-this is a memory game project, which is nedded in udacity FrontEnd developer nanodegree program.
+this is a memory game project, which is needed in udacity FrontEnd developer nanodegree program.
 
 I used Html, CSS files and shuffle function -to chnge the order of cards- from udacity starter project [here](https://github.com/udacity/fend-project-memory-game), and used pure javascript to add the functionaliy to the game, also update the starter html file abit, and css files with the desired animation.
 
@@ -27,7 +27,8 @@ I used Html, CSS files and shuffle function -to chnge the order of cards- from u
 6- when the player win the game, there's win message appear with a button to tell him if he want to play it again.
 
 
-For specific details plase open `js/app.js` and check the code you will find comments that describe how every function work.
+
+For specific details please open `js/app.js` and check the code you will find comments that describe how every function work.
 
 
 ## Want to play it?
