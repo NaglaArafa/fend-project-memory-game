@@ -1,5 +1,6 @@
 var shuffledCards, restartGame, timer, movesCounter = 0,
     starNum = 3,
+    firstClick = true,
     findMatch = [],
     matchedcards = [],
     starList = document.querySelectorAll('.stars li'),
@@ -58,7 +59,6 @@ function shuffle(array) {
         setTimeout(() => value.className = "card", 3000)
         value.addEventListener("click", ShowCard)
     })
-    startTimer();
     restartGame = restart;
 })(); // self excution function to be called at the begining
 
@@ -77,6 +77,10 @@ document.querySelectorAll(".restart, .playAgain").forEach(function(element) {
  the function "AddToList" with this card, also remove the click event from this card
  to prevent the user from clicking to the same card and match it with itself */
 function ShowCard() {
+    if (firstClick) {
+        firstClick = false;
+        startTimer();
+    }
     this.className += " open show";
     setTimeout(() => AddToList(this), 1000)
     this.removeEventListener("click", ShowCard)
@@ -143,15 +147,12 @@ function increaseCounter() {
         starList[1].firstChild.className = "fa fa-star-o";
         starNum--;
     }
-    if (movesCounter == 20) {
-        starList[2].firstChild.className = "fa fa-star-o";
-        starNum--;
-    }
 }
 
 /*this function called to reset out counter when starting new game like moves counter,
  also retern the starts to be 3 again and hide the wining message */
 function resetCounter() {
+    resetTimer()
     movesCounter = 0;
     writeMoves(movesCounter)
     starList.forEach(function(element) {
@@ -181,4 +182,15 @@ function startTimer() {
             value.innerHTML = pad(parseInt(sec / 60, 10));
         })
     }, 1000);
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    firstClick = true;
+    document.querySelectorAll("#seconds").forEach(function(value) {
+        value.innerHTML = "00";
+    })
+    document.querySelectorAll("#minutes").forEach(function(value) {
+        value.innerHTML = "00";
+    })
 }
